@@ -1,4 +1,4 @@
-[Go visit my Heroku app](https://git.heroku.com/oentoro-assignment2.git)
+[Go visit my Heroku app](http://oentoro-assignment2.herokuapp.com/playlists)
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
