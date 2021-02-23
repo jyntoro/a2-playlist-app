@@ -3,11 +3,13 @@
 @section('title', 'Playlists')
 
 @section('content')
-    <table>
+    <table class="table">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Name</th>
+                <th>Show</th>
+                <th>Edit</th>
             </tr>
         </thead>
         <tbody>
@@ -22,6 +24,11 @@
                     <td>
                         <a href="{{route('playlist.show', [ 'id' => $playlist->id ]) }}">
                             Details
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{route('playlist.edit', [ 'id' => $playlist->id ]) }}">
+                            Rename
                         </a>
                     </td>
                 </tr>
