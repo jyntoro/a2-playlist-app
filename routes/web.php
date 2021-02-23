@@ -4,6 +4,7 @@ use App\Http\Controllers\PlaylistController;
 use App\Http\Controllers\TrackController;
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,3 +34,7 @@ Route::get('/tracks', [TrackController::class, 'index'])->name('track.index');
 Route::get('/tracks/new', [TrackController::class, 'create'])->name('track.create');
 
 Route::post('/tracks', [TrackController::class, 'store'])->name('track.store');
+
+if (env('APP_ENV') !== 'local') {
+    URL::forceScheme('https');
+}
