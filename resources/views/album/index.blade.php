@@ -11,6 +11,7 @@
             <tr>
                 <th>Album</th>
                 <th>Artist</th>
+                <th>Creator</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -24,9 +25,14 @@
                         {{ $album->artist->name }}
                     </td>
                     <td>
-                        <a href="{{ route('album.edit', [ 'id' => $album->id ]) }}">
-                            Edit
-                        </a>
+                        {{ $album->user->name }}
+                    </td>
+                    <td>
+                        @can ('view', $album)
+                            <a href="{{ route('album.edit', [ 'id' => $album->id ]) }}">
+                                Edit
+                            </a>
+                        @endcan
                     </td>
                 </tr>
             @endforeach

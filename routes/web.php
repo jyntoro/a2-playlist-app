@@ -43,6 +43,11 @@ Route::middleware(['custom-auth'])->group(function (){
     });
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+    
+    Route::get('/albums/create', [AlbumController::class, 'create'])->name('album.create');
+    Route::post('/albums', [AlbumController::class, 'store'])->name('album.store');
+    Route::get('/albums/{id}/edit', [AlbumController::class, 'edit'])->name('album.edit');
+    Route::post('/albums/{id}', [AlbumController::class, 'update'])->name('album.update');
 });
 
 Route::view('/maintenance', 'maintenance-mode')->name('maintenance-mode');
@@ -59,10 +64,6 @@ Route::middleware(['maintenance-mode'])->group(function () {
     Route::post('/tracks', [TrackController::class, 'store'])->name('track.store');
 
     Route::get('/albums', [AlbumController::class, 'index'])->name('album.index');
-    Route::get('/albums/create', [AlbumController::class, 'create'])->name('album.create');
-    Route::post('/albums', [AlbumController::class, 'store'])->name('album.store');
-    Route::get('/albums/{id}/edit', [AlbumController::class, 'edit'])->name('album.edit');
-    Route::post('/albums/{id}', [AlbumController::class, 'update'])->name('album.update');
 });
 
 if (env('APP_ENV') !== 'local') {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Album;
 use App\Models\Artist;
 
@@ -12,9 +13,12 @@ class AlbumController extends Controller
 {
     public function index() {
 
+        // $this->authorize('viewAny');
+
         return view('album.index', [ // corresponds to a folder in the views folder
             'albums' => Album::join('artists', 'artists.id', '=', 'albums.artist_id')
-            ->with(['artist'])
+            ->join('users', 'users.id', '=', 'albums.user_id')
+            ->with(['artist', 'user'])
             ->orderBy('artists.name')
             ->orderBy('title')
             ->select('*', 'albums.id as id')
@@ -24,9 +28,11 @@ class AlbumController extends Controller
     }
 
     public function create() { 
-      return view('album.create', [
+        
+        return view('album.create', [
             'artists' => Artist::orderBy('name')->get()
         ]);
+
     }
 
     public function store(Request $request) {
@@ -38,6 +44,7 @@ class AlbumController extends Controller
         $album = new Album();
         $album->title = $request->input('title');
         $album->artist_id = $request->input('artist');
+        $album->user_id = Auth::user()->id;
         $album->save();
         
         return redirect()->route('album.index')
@@ -50,6 +57,10 @@ class AlbumController extends Controller
         $artists = Artist::orderBy('name')->get();
 
         $album = Album::find($id);
+
+        if (!Auth::user()->can('view', $album)) {
+            abort(403);
+        }
 
         return view('album.edit', [
             'artists' => $artists,
@@ -67,6 +78,8 @@ class AlbumController extends Controller
         $album->title = $request->input('title');
         $album->artist_id = $request->input('artist');
         $album->save();
+
+        $this->authorize('view', $album);
 
         return redirect()
             ->route('album.edit', [ 'id' => $id ])

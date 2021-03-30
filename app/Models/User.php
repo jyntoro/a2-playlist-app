@@ -48,5 +48,9 @@ class User extends Authenticatable
     public function isAdmin() {
         return $this->role->slug === 'admin';
     }
+
+    public function albums() {
+        return $this->hasMany(Album::class);
+    }
     
 }
