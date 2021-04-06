@@ -10,6 +10,10 @@ use App\Http\Controllers\ProfileController;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Stats;
+use App\Models\User;
+use App\Models\Playlist;
 use App\Models\Artist;
 use App\Models\Track;
 use App\Models\Genre;
@@ -40,6 +44,12 @@ Route::middleware(['custom-auth'])->group(function (){
     Route::middleware(['admin-access'])->group(function () {
         Route::view('/admin', 'admin.edit')->name('admin.edit');
         Route::post('/admin', [ConfigurationController::class, 'store'])->name('admin.store');
+        Route::post('/stats', function() {
+            $users = User::all();
+            foreach ($users as $user) {
+                Mail::to($user->email)->queue(new Stats());
+            }
+        })->name('email.stats');
     });
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
@@ -64,6 +74,7 @@ Route::middleware(['maintenance-mode'])->group(function () {
     Route::post('/tracks', [TrackController::class, 'store'])->name('track.store');
 
     Route::get('/albums', [AlbumController::class, 'index'])->name('album.index');
+    
 });
 
 if (env('APP_ENV') !== 'local') {
